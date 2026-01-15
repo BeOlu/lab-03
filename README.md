@@ -2,12 +2,12 @@
 
 ## Student Details
 
-- **Full Name:** `<Enter name>`
-- **CCID:** `<Enter ccid>`
+- **Full Name:** Rebecca OluwaBiyi
+- **CCID:** oluwabiy
 
 ## References and Resources
 
-List any resources used here, or simply put `N/A` if not applicable.
+CMPUT 301 Course Content. Gemini A.I.
 
 ## Verbal Collaboration
 
