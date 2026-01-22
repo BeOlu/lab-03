@@ -1,55 +1,78 @@
-# CMPUT 301 W25 - Lab 2: Android Basics
+# Lab 3: More Android - Adapters & Fragments
 
-## Contents
+## 1. Getting Started
 
-1. [Lab 2 Instructions](#lab-2-instructions)
-2. [Lab 2 Participation Exercise](#lab-2-participation-exercise)
-3. [How to submit your Lab 2](#how-to-submit-your-lab-2)
+1. Clone this repository and open the `/code` folder in Android Studio.
+2. You'll find a basic `ListyCity` app that displays a static list of cities.
 
-## Lab 2 Instructions
+## 2. Demo Instructions
 
-In Lab 2, we'll do:
+During the lab demo, we'll implement "Add City" functionality:
 
-A quick review of [OOP principles](https://ualberta-cmput301.github.io/labs/slides/CMPUT_301_LAB_2_OOP_PRINCIPLES.pdf) and [Java Coding Conventions](https://ualberta-cmput301.github.io/labs/slides/Code_Conventions_Schoepp.pdf)
+1. Review [Lab 3 Slides](https://ualberta-cmput301.github.io/labs/slides/Lab_3_Slides_Winter_2023.pdf)
+2. Follow along with [Lab 3 Instructions](https://ualberta-cmput301.github.io/labs/slides/Lab_3_Instructions_Winter_2023.pdf)
+3. Read about Java Code Conventions (see the [Code Conventions (Schoepp) PDF](https://ualberta-cmput301.github.io/labs/slides/Code_Conventions_Schoepp.pdf)).
+4. By the end, you'll have implemented the ability to add new cities to the list.
 
-An introduction to Android Basics [Lab 2 Android Basics PDF](https://ualberta-cmput301.github.io/labs/slides/CMPUT_301_LAB_2_ANDROID_BASICS.pdf)
+## 3. Lab 3 Participation Exercise
 
-A demo to display list of items using ListView/ListAdapter [Lab 2 ListView Demo Example - Instructions PDF under Lab 2](https://ualberta-cmput301.github.io/labs/slides/CMPUT_301_LAB_2_INSTRUCTIONS.pdf)
+### Task
 
-Lab Exercise - adding and removing items from ListAdapter (see the Lab 2 Participation Exercise below for more details.)
+- Add functionality to `ListyCity` to allow **editing** existing cities. The design implementation is flexible and up to your creativity.
+- Update the `README.md` and the `LICENSE.md` with your details.
 
-## Lab 2 Participation Exercise
+### Example Implementation
 
-Task: Modify/Expand ListyCity to allow for the addition of new cities as well as the deletion of existing ones in the ListView. The specifics of the design of this functionality are up to you.
+<div style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <img src="assets/img1.png" width="300" style="margin: 20px;">
+    <img src="assets/img2.png" width="300" style="margin: 20px;">
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <img src="assets/img3.png" width="300" style="margin: 20px;">
+    <img src="assets/img4.png" width="300" style="margin: 20px;">
+</div>
 
-> [!NOTE]
-> If you could not attend the labs or do not have the code for ListyCity, follow the instructions in Lab 2 ListView Example - Instructions.
+<br>
 
-Hints:
+> **Note:** Your app does not need to look exactly like the screenshots.  The only requirement is the ability to edit an existing city.  
 
-1. You may want to use the OnClickListener methods discussed in the lab.
+## 4. Implementation Tips
 
-2. Ideally you should consider treating the cities as objects, however, in this exercise it may not be necessary.
+### 1. City Class Updates
 
-Here are some screenshots from an example application that demonstrate the required functionality.
+- Add setter methods for city properties
+- Example: `setName()`, `setProvince()`
 
-> [!NOTE]
-> Your app does not need to look exactly like this demo!
+### 2. Choose Your Implementation
 
-1. Press "ADD CITY" then type the name and press "CONFIRM". This adds a new city name to the listview
+Option 1 - Basic Approach:
 
-2. Tap a city name to select it then press "DELETE CITY" to remove the city from the listview.
+- Create Fragment constructor with `City` parameter
+- Store `City` as Fragment instance variable
+- Include empty constructor for new additions
 
-<img src="./images/img1_lab2_main.jpeg" alt="Screen1" width="300" style="margin: 20px;">
-<img src="./images/img2_lab2.png" alt="Screen2" width="300" style="margin: 20px;">
-<img src="./images/img3_lab2.png" alt="Screen3" width="300" style="margin: 20px;">
-<img src="./images/img4_lab2.jpeg" alt="Screen4" width="300" style="margin: 20px;">
+Option 2 - Recommended Approach:
 
-## How to submit your Lab 2
+- Implement `newInstance()` pattern
+- Use Fragment Bundle for data
+- Make `City` implement `Serializable`
+- Access data via `getArguments()` or `requireArguments()`
+
+#### Example Code
+
+```java
+public static EditFragment newInstance(City city) {
+   Bundle args = new Bundle();
+   args.putSerializable("city", city);
+   EditFragment fragment = new EditFragment();
+   fragment.setArguments(args);
+   return fragment;
+}
+```
+
+## 5. Submission
 
 > [!CAUTION]
 > Make sure to commit **and** push your code to the GitHub repository before the deadline!
-
-> Make sure you have updated `README.md` with **your name** and **CCID** (Not your student number).
-
-> Once you completed, please go to [Canvas](https://canvas.ualberta.ca/) and submit **your Lab 2 GitHub repository link**.
+> 
+> Once you completed, please go to [Canvas](https://canvas.ualberta.ca/) and submit **your Lab 3 GitHub repository link**.
