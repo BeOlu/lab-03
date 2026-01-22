@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
 
-    <!-- Add/Delete Buttons at Top of Screen -->
+    <!-- Add/Edit/Delete Buttons at Top of Screen -->
     <LinearLayout
         android:id="@+id/modify_buttons"
         android:layout_width="match_parent"
@@ -23,6 +23,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Add City"
+            />
+
+        <Button
+            android:id="@+id/edit_city_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Edit City"
             />
 
         <Button
@@ -45,7 +53,7 @@
         />
 
 
-    <!-- Hidden Input Add City Text Box -->
+    <!-- Hidden Input City Text Box -->
     <LinearLayout
         android:id="@+id/add_city_layout"
         android:layout_width="match_parent"

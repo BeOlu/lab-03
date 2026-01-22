@@ -24,45 +24,38 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> cityAdapter;
     ArrayList<String> dataList;
     int selectedPosition = -1; //use variable to track which item is selected
+    boolean isEditing = false; //track if we are editing or adding
 
-
-//Button button = findViewById(R.id.add_button);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) { //called when activity is first created
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        //activity_main.xml defines behaviour and logic for screen actions (i.e. something when button is clicked)
-        setContentView(R.layout.activity_main); //function connects to layout file activity_main.xml
+        setContentView(R.layout.activity_main);
 
-        //????like margins?
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        //City ListView Widget ID referenced from layout file activity_main.xml
         cityList = findViewById(R.id.city_list);
-        //define array
         String [] cities = {"Edmonton", "Calgary", "Toronto", "Winnipeg", "London"};
 
         dataList = new ArrayList<>();
         dataList.addAll(Arrays.asList(cities));
 
-        /*adapter takes in input and converts to another type of output
-        this = current activity, content file data list is to be displayed and looks like content.xml */
         cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
-        //whatever is passed to adapter is connected to the list
-        cityList.setAdapter(cityAdapter); //use what is in city adapter and display accordingly
+        cityList.setAdapter(cityAdapter);
 
 
         //Find the Views
         Button addCityButton = findViewById(R.id.add_city_button);
+        Button editCityButton = findViewById(R.id.edit_city_button);
+        Button deleteCityButton = findViewById(R.id.delete_city_button);
         LinearLayout addCityLayout = findViewById(R.id.add_city_layout);
         EditText addCityField = findViewById(R.id.add_city_field);
         Button confirmButton = findViewById(R.id.confirm_button);
-        Button deleteCityButton = findViewById(R.id.delete_city_button); //?
 
         //Track Selection in the List
         cityList.setOnItemClickListener((parent, view, position, id) -> {
@@ -76,23 +69,44 @@ public class MainActivity extends AppCompatActivity {
                 dataList.remove(selectedPosition); //remove from the list
                 cityAdapter.notifyDataSetChanged(); //refresh the ListView
                 selectedPosition = -1; //reset the selection
+            } else {
+                Toast.makeText(MainActivity.this, "Please select a city to delete", Toast.LENGTH_SHORT).show();
             }
         });
 
         //"Add City" Shows the input box
         addCityButton.setOnClickListener(v -> {
+            isEditing = false;
+            addCityField.setText("");
             addCityLayout.setVisibility(View.VISIBLE);
         });
 
+        //"Edit City" Shows the input box with selected city name
+        editCityButton.setOnClickListener(v -> {
+            if (selectedPosition != -1) {
+                isEditing = true;
+                addCityField.setText(dataList.get(selectedPosition));
+                addCityLayout.setVisibility(View.VISIBLE);
+            } else {
+                Toast.makeText(MainActivity.this, "Please select a city to edit", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        //"Confirm" adds the city to the list
+
+        //"Confirm" adds or updates the city in the list
         confirmButton.setOnClickListener(v -> {
             String cityName = addCityField.getText().toString();
             if (!cityName.isEmpty()) {
-                dataList.add(cityName); //add input city name to ArrayList
+                if (isEditing && selectedPosition != -1) {
+                    dataList.set(selectedPosition, cityName); //update existing
+                    isEditing = false;
+                } else {
+                    dataList.add(cityName); //add new
+                }
                 cityAdapter.notifyDataSetChanged(); //Refresh ListView
                 addCityField.setText(""); //Clear Input
                 addCityLayout.setVisibility(View.GONE); //Hide input again
+                selectedPosition = -1; //Reset selection
             }
         });
 
